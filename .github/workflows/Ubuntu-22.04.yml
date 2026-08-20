@@ -76,12 +76,12 @@ jobs:
         REPOSITORY: ${{ secrets.PRIVATE_REPOSITORY }}
         NAME_ACCOUNT_GITHUB: you-oops-dev
       run: |
-       curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 30 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/squidCA_import_client.der > ./squidCA_import_client.der
+       curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 30 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/squidCA.pem > ./squidCA.pem
 
     - name: Install certificate in system
       env:
         NAME_ACCOUNT_GITHUB: you-oops-dev
       run: |
        sudo mkdir -pv /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted
-       sudo mv -fv ./squidCA_import_client.der /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted/ && sudo chown root:root /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted/squidCA_import_client.der
+       sudo mv -fv ./squidCA.pem /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted/ && sudo chown root:root /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted/squidCA.pem
        sudo update-ca-certificates -v
