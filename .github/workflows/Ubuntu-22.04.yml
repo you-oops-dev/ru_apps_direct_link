@@ -82,6 +82,6 @@ jobs:
       env:
         NAME_ACCOUNT_GITHUB: you-oops-dev
       run: |
-       sudo mkdir -pv /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted
-       sudo mv -fv ./squidCA_import_client.crt /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted/ && sudo chown -c root:root /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted/squidCA_import_client.crt
+       sudo mkdir -pv /usr/local/share/ca-certificates
+       sudo mv -fv ./squidCA_import_client.crt /usr/local/share/ca-certificates && sudo chown -c root:root /usr/local/share/ca-certificates/squidCA_import_client.crt
        sudo update-ca-certificates --fresh -v
