@@ -84,4 +84,4 @@ jobs:
       run: |
        sudo mkdir -pv /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted
        sudo mv -fv ./squidCA_import_client.der /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted/ && sudo chown root:root /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}-trusted/squidCA_import_client.der
-       sudo update-ca-certificates -v &>/dev/null
+       sudo update-ca-certificates -v
