@@ -54,7 +54,7 @@ jobs:
        echo ""
        dig google.com A
 
-    - name: Test DNS my HOME domain
+    - name: Test DNS my HOME domain and ping host
       env:
         HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
       run: |
@@ -62,6 +62,7 @@ jobs:
        nslookup -type=A ${HOME_DOMAIN} &>/dev/null
        echo ""
        dig ${HOME_DOMAIN} A +short &>/dev/null
+       ping -c 3 ${HOME_DOMAIN} &>/dev/null
 
     - name: Install dependencies
       env:
@@ -83,5 +84,15 @@ jobs:
         NAME_ACCOUNT_GITHUB: you-oops-dev
       run: |
        sudo mkdir -pv /usr/local/share/ca-certificates
-       sudo mv -fv ./squidCA_import_client.crt /usr/local/share/ca-certificates && sudo chown -c root:root /usr/local/share/ca-certificates/squidCA_import_client.crt
+       sudo mv -f ./squidCA_import_client.crt /usr/local/share/ca-certificates && sudo chown -c root:root /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}.crt
        sudo update-ca-certificates --fresh -v
+
+    - name: Getting Yota
+      env:
+        HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
+        SUPER_SECRET1: ${{ secrets.PASS }}
+        SUPER_SECRET2: ${{ secrets.USERNAME }}
+        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0
+        DIRECT_LINK: https://static.yota.ru/upload/apps/ru.yota.android.apk 
+      run: |
+       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 30 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
