@@ -92,7 +92,17 @@ jobs:
         HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
         SUPER_SECRET1: ${{ secrets.PASS }}
         SUPER_SECRET2: ${{ secrets.USERNAME }}
-        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0
+        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
         DIRECT_LINK: https://static.yota.ru/upload/apps/ru.yota.android.apk 
+      run: |
+       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 30 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+
+    - name: Getting Avito
+      env:
+        HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
+        SUPER_SECRET1: ${{ secrets.PASS }}
+        SUPER_SECRET2: ${{ secrets.USERNAME }}
+        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
+        DIRECT_LINK: https://www.avito.st/s/app/apk/avito.apk 
       run: |
        curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 30 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
