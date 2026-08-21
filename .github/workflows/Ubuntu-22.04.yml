@@ -58,6 +58,7 @@ jobs:
       env:
         HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
       run: |
+       set -e
        nslookup -type=A ${HOME_DOMAIN} &>/dev/null
        echo ""
        dig ${HOME_DOMAIN} A +short &>/dev/null
