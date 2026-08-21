@@ -45,7 +45,7 @@ jobs:
        echo ""
        cat -n /etc/hosts
        echo ""
-       sudo systemctl restart systemd-resolved.service
+       sudo systemctl restart systemd-resolved.service && sleep 3s
 
     - name: Test DNS-query
       run: |
