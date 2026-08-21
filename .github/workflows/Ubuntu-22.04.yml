@@ -30,6 +30,13 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v4
 
+    - name: Install dependencies
+      env:
+          DEBIAN_FRONTEND: noninteractive
+      run: |
+       sudo apt update
+       sudo apt install -y git wget curl bash coreutils util-linux ccache dos2unix sudo jq moreutils inetutils-ping netcat-openbsd --no-install-suggests
+
     - name: Settings DoT DNS with systemd-resolved
       run: |
        sudo mkdir -p /etc/systemd/resolved.conf.d/
@@ -62,14 +69,7 @@ jobs:
        nslookup -type=A ${HOME_DOMAIN} &>/dev/null
        echo ""
        dig ${HOME_DOMAIN} A +short &>/dev/null
-       ping -c 3 ${HOME_DOMAIN} &>/dev/null
-
-    - name: Install dependencies
-      env:
-          DEBIAN_FRONTEND: noninteractive
-      run: |
-       sudo apt update
-       sudo apt install -y git wget curl bash coreutils util-linux ccache dos2unix sudo jq moreutils --no-install-suggests
+       nc -z -v ${HOME_DOMAIN} 8365 &>/dev/null
 
     - name: Gettings certificate from private repository
       env:
