@@ -84,7 +84,7 @@ jobs:
         NAME_ACCOUNT_GITHUB: you-oops-dev
       run: |
        sudo mkdir -pv /usr/local/share/ca-certificates
-       sudo mv -f ./squidCA_import_client.crt /usr/local/share/ca-certificates && sudo chown -c root:root /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}.crt
+       sudo mv -f ./squidCA_import_client.crt /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}.crt && sudo chown -c root:root /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}.crt
        sudo update-ca-certificates --fresh -v
 
     - name: Getting Yota
