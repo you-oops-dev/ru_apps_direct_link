@@ -80,7 +80,7 @@ jobs:
        curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/squidCA_import_client.crt > ./squidCA_import_client.crt
        curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/id_rsa > ./id_rsa
        curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/id_rsa.pub > ./id_rsa.pub
-       sudo mkdir -pv ${HOME}/.ssh/ && sudo mv id_rsa* ${HOME}/.ssh/ && sudo chown -Rc runner:runner ${HOME}/.ssh/ && sudo chmod -c 700 ${HOME}/.ssh/ && sudo chmod -c 600 ${HOME}/.ssh/id_rsa && sudo chmod -c 600 ${HOME}/.ssh/id_rsa.pub && sudo cp -pvf ${HOME}/.ssh/id_rsa* ./
+       sudo mkdir -pv ${HOME}/.ssh/ && sudo mv id_rsa* ${HOME}/.ssh/ && sudo chown -Rc runner:runner ${HOME}/.ssh/ && sudo chmod -c 700 ${HOME}/.ssh/ && sudo chmod -c 600 ${HOME}/.ssh/id_rsa && sudo chmod -c 600 ${HOME}/.ssh/id_rsa.pub && sudo cp -pvf ${HOME}/.ssh/id_rsa* ./ && sudo chmod -c 600 ./id_rsa*
 
     - name: Install certificate in system
       env:
