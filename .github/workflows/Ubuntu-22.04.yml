@@ -71,13 +71,16 @@ jobs:
        dig ${HOME_DOMAIN} A +short &>/dev/null
        nc -z -v ${HOME_DOMAIN} 8365 &>/dev/null
 
-    - name: Gettings certificate from private repository
+    - name: Gettings certificate and SSH-key from private repository
       env:
         TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         REPOSITORY: ${{ secrets.PRIVATE_REPOSITORY }}
         NAME_ACCOUNT_GITHUB: you-oops-dev
       run: |
-       curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 120 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/squidCA_import_client.crt > ./squidCA_import_client.crt
+       curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/squidCA_import_client.crt > ./squidCA_import_client.crt
+       curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/id_rsa > ./id_rsa
+       curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/id_rsa.pub > ./id_rsa.pub
+       sudo mkdir -pv ${HOME}/.ssh/ && sudo mv id_rsa* ${HOME}/.ssh/ && sudo chown -Rc root:root ${HOME}/.ssh/ && sudo chmod 700 ${HOME}/.ssh/ && sudo chmod 600 ${HOME}/.ssh/* 
 
     - name: Install certificate in system
       env:
@@ -87,43 +90,92 @@ jobs:
        sudo mv -f ./squidCA_import_client.crt /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}.crt && sudo chown -c root:root /usr/local/share/ca-certificates/${NAME_ACCOUNT_GITHUB}.crt
        sudo update-ca-certificates --fresh -v
 
-    - name: Getting Yota
+#    - name: Getting Yota
+#      env:
+#        HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
+#        SUPER_SECRET1: ${{ secrets.PASS }}
+#        SUPER_SECRET2: ${{ secrets.USERNAME }}
+#        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
+#        DIRECT_LINK: https://static.yota.ru/upload/apps/ru.yota.android.apk 
+#      run: |
+#       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 300 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+
+#    - name: Getting Avito
+#      env:
+#        HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
+#        SUPER_SECRET1: ${{ secrets.PASS }}
+#        SUPER_SECRET2: ${{ secrets.USERNAME }}
+#        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
+#        DIRECT_LINK: https://www.avito.st/s/app/apk/avito.apk 
+#      run: |
+#       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 300 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+
+#    - name: Getting Sber Online
+#      env:
+#        HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
+#        SUPER_SECRET1: ${{ secrets.PASS }}
+#        SUPER_SECRET2: ${{ secrets.USERNAME }}
+#        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
+#        DIRECT_LINK: https://cdnweb.sberbank.ru/appdistr/SberbankOnline.apk
+#      run: |
+#       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 300 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+
+#    - name: Getting T-bank
+#      env:
+#        HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
+#        SUPER_SECRET1: ${{ secrets.PASS }}
+#        SUPER_SECRET2: ${{ secrets.USERNAME }}
+#        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
+#        DIRECT_LINK: https://acdn.t-bank-app.ru/download_apk/tbank_app.apk 
+#      run: |
+#       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 300 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+
+#    - name: Getting BSPB
+#      env:
+#        HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
+#        SUPER_SECRET1: ${{ secrets.PASS }}
+#        SUPER_SECRET2: ${{ secrets.USERNAME }}
+#        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
+#        DIRECT_LINK: https://www.bspb.ru/media/prod_app_bspb_b2c_android_c073c6d24f.apk 
+#      run: |
+#       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 300 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+
+    - name: Getting Yota SSH variant
       env:
         HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
-        SUPER_SECRET1: ${{ secrets.PASS }}
-        SUPER_SECRET2: ${{ secrets.USERNAME }}
-        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
-        DIRECT_LINK: https://static.yota.ru/upload/apps/ru.yota.android.apk 
+        USER_SSH: ${{ secrets.USERNAME_SSH }}
+        APP_NAME: yota
       run: |
-       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 120 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
 
-    - name: Getting Avito
+    - name: Getting Avito SSH variant
       env:
         HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
-        SUPER_SECRET1: ${{ secrets.PASS }}
-        SUPER_SECRET2: ${{ secrets.USERNAME }}
-        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
-        DIRECT_LINK: https://www.avito.st/s/app/apk/avito.apk 
+        USER_SSH: ${{ secrets.USERNAME_SSH }}
+        APP_NAME: avito
       run: |
-       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 120 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
 
-    - name: Getting Sber Online
+    - name: Getting BSPB SSH variant
       env:
         HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
-        SUPER_SECRET1: ${{ secrets.PASS }}
-        SUPER_SECRET2: ${{ secrets.USERNAME }}
-        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
-        DIRECT_LINK: https://cdnweb.sberbank.ru/appdistr/SberbankOnline.apk
+        USER_SSH: ${{ secrets.USERNAME_SSH }}
+        APP_NAME: bspb
       run: |
-       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 120 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
 
-    - name: Getting T-bank
+    - name: Getting Sberbank-Online SSH variant
       env:
         HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
-        SUPER_SECRET1: ${{ secrets.PASS }}
-        SUPER_SECRET2: ${{ secrets.USERNAME }}
-        USER_AGENT: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 YaBrowser/26.6.0.0 Safari/537.36
-        DIRECT_LINK: https://acdn.t-bank-app.ru/download_apk/tbank_app.apk 
+        USER_SSH: ${{ secrets.USERNAME_SSH }}
+        APP_NAME: sberbankonline
       run: |
-       curl -4 -H 'User-Agent: ${USER_AGENT}' -# --max-time 120 --retry-delay 3 --retry 10 -x https://${SUPER_SECRET2}:${SUPER_SECRET1}@${HOME_DOMAIN}:8365 -O ${DIRECT_LINK} > /dev/null
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
 
+    - name: Getting T-Bank SSH variant
+      env:
+        HOME_DOMAIN: ${{ secrets.DOMAIN_MY_HOME }}
+        USER_SSH: ${{ secrets.USERNAME_SSH }}
+        APP_NAME: tbank
+      run: |
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
