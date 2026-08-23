@@ -35,7 +35,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
       run: |
        sudo apt update
-       sudo apt install -y git wget curl bash coreutils util-linux ccache dos2unix sudo jq moreutils inetutils-ping netcat-openbsd --no-install-suggests
+       sudo apt install -y git wget curl bash coreutils util-linux ccache dos2unix sudo jq moreutils inetutils-ping netcat-openbsd openssh-client --no-install-suggests
 
     - name: Settings DoT DNS with systemd-resolved
       run: |
