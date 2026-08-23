@@ -81,7 +81,7 @@ jobs:
        curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/squidCA_import_client.crt > ./squidCA_import_client.crt
        curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/id_rsa > ./id_rsa
        curl -4 -H "Authorization: token ${TOKEN}" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0' --max-time 300 --retry-delay 3 --retry 10 -# https://raw.githubusercontent.com/${NAME_ACCOUNT_GITHUB}/${REPOSITORY}/main/id_rsa.pub > ./id_rsa.pub
-       sudo mkdir -pv ${HOME}/.ssh/ && sudo mv id_rsa* ${HOME}/.ssh/ && sudo chown -Rc runner:runner ${HOME}/.ssh/ && sudo chmod -c 700 ${HOME}/.ssh/ && sudo chmod -c 600 ${HOME}/.ssh/id_rsa && sudo chmod -c 600 ${HOME}/.ssh/id_rsa.pub && ssh-keyscan -H "${HOME_DOMAIN}" >> ~/.ssh/known_hosts && sudo cp -pvf ${HOME}/.ssh/id_rsa* ./ && sudo chmod -c 600 ./id_rsa*
+       sudo mkdir -pv ${HOME}/.ssh/ && sudo mv id_rsa* ${HOME}/.ssh/ && sudo chown -Rc runner:runner ${HOME}/.ssh/ && sudo chmod -c 700 ${HOME}/.ssh/ && sudo chmod -c 600 ${HOME}/.ssh/id_rsa && sudo chmod -c 600 ${HOME}/.ssh/id_rsa.pub && ssh-keyscan -H "${HOME_DOMAIN}" >> ~/.ssh/known_hosts
 
     - name: Install certificate in system
       env:
@@ -147,7 +147,7 @@ jobs:
         USER_SSH: ${{ secrets.USERNAME_SSH }}
         APP_NAME: yota
       run: |
-       scp  ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
+       scp  ${USER_SSH}@${HOME_DOMAIN}:/home/${USER_SSH}/apps/*${APP_NAME}* ./
 
     - name: Getting Avito SSH variant
       env:
@@ -155,7 +155,7 @@ jobs:
         USER_SSH: ${{ secrets.USERNAME_SSH }}
         APP_NAME: avito
       run: |
-       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USER_SSH}/apps/*${APP_NAME}* ./
 
     - name: Getting BSPB SSH variant
       env:
@@ -163,7 +163,7 @@ jobs:
         USER_SSH: ${{ secrets.USERNAME_SSH }}
         APP_NAME: bspb
       run: |
-       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USER_SSH}/apps/*${APP_NAME}* ./
 
     - name: Getting Sberbank-Online SSH variant
       env:
@@ -171,7 +171,7 @@ jobs:
         USER_SSH: ${{ secrets.USERNAME_SSH }}
         APP_NAME: sberbankonline
       run: |
-       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USER_SSH}/apps/*${APP_NAME}* ./
 
     - name: Getting T-Bank SSH variant
       env:
@@ -179,4 +179,4 @@ jobs:
         USER_SSH: ${{ secrets.USERNAME_SSH }}
         APP_NAME: tbank
       run: |
-       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USERNAME_SSH}/apps/*${APP_NAME}* ./
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USER_SSH}/apps/*${APP_NAME}* ./
