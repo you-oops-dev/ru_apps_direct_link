@@ -197,7 +197,7 @@ jobs:
         USER_SSH: ${{ secrets.USERNAME_SSH }}
         APP_NAME: yoomoney
       run: |
-       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USER_SSH}/apps/*${APP_NAME}* ./
+       scp ${USER_SSH}@${HOME_DOMAIN}:/home/${USER_SSH}/apps/yoomoney-*.apk ./
 
     - name: Commit md5sum files
       uses: stefanzweifel/git-auto-commit-action@v5
